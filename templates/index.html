@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <main class="hero-section">
+    <div class="container">
+      
+      <div class="section-content">
+        <h2>Discover places near you.</h2>
+        <a href="#" class="btn-primary">Sign up</a>
+        <a href="{{ url_for('about') }}" class="btn-secondary">Learn more</a>
+      </div>
+    <div class="form">
+        <input type="number" name="first_number">
+        <input type="number" name="second_number">
+        <a href="{{ url_for('calculate') }}" class="btn-secondary">Calculate</a>
+{#        <input type="text" name="fname">#}
+{#        <input type="text" name="fname">#}
+{#        <input type="text" name="fname">#}
+{#        <input type="text" name="fname">#}
+{#        <input type="text" name="fname">#}
+
+          {% set product = 'noase' %}
+          {% if name %}
+            <p>"{{ name }}"</p>
+          {% endif %}
+
+        {% macro will_it_work(something) %}
+          {{ something }}
+        {% endmacro %}
+
+      {{ will_it_work('fred') }}
+
+
+      </div>
+
+      <div class="section-device">
+        <img src="../static/img/device.png">
+      </div>
+      
+      <div class="clearfix"></div>
+
+    </div>
+  </main>
+{% endblock %}
