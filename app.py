@@ -1,11 +1,15 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 from processing import do_calculation
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
 
+@app.route("/")
+def index():
+    return render_template("main_page.html")
 
-@app.route("/", methods=["GET", "POST"])
+
+@app.route("/adder", methods=["GET", "POST"])
 def adder_page():
     errors = ""
     if request.method == "POST":
