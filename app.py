@@ -1,10 +1,11 @@
 from flask import Flask, redirect, request, render_template, url_for
 from processing import do_calculation
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy #turn on in production ONLINE
 
 app = Flask(__name__)
-# app.config["DEBUG"] = True
 
+
+#turn on in production ONLINE VVVVVVVVVVVVVVVVVVVV
 SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
     username="MathFour",
     password="bB88!**W6W9ccb",
@@ -18,24 +19,26 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 class Comment(db.Model):
-
     __tablename__ = "comments"
-
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(4096))
+# turn on in production ONLINE ^^^^^^^^^^^^^^^^^^^^^^
 
-# comments = []
+
+# comments.append(request.form["contents"]) #turn on in dev on LAPTOP
+# comments = [] #turn on in dev on LAPTOP
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "GET":
-        return render_template('comments_page.html', comments=Comment.query.all())
+        return render_template('comments_page.html', comments=Comment.query.all()) #turn on in production ONLINE
+        # return render_template('comments_page.html', comments=comments)) #turn on in dev on LAPTOP
 
-    # elif request.method == 'POST':
-    # comments.append(request.form["contents"])
-    comment = Comment(content=request.form["contents"])
-    db.session.add(comment)
-    db.session.commit()
+    comment = Comment(content=request.form["contents"])  # turn on in production ONLINE
+    db.session.add(comment)  # turn on in production ONLINE
+    db.session.commit()  # turn on in production ONLINE
+    # comments.append(request.form["contents"]) #turn on in dev on LAPTOP
+
     return redirect(url_for('index'))
 
 
