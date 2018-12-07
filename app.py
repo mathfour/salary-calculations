@@ -1,12 +1,18 @@
-from flask import Flask, request, render_template
+from flask import Flask, redirect, request, render_template, url_for
 from processing import do_calculation
 
 app = Flask(__name__)
-app.config["DEBUG"] = True
+# app.config["DEBUG"] = True
+comments = []
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def index():
-    return render_template("main_page.html")
+    if request.method == "GET":
+        return render_template('comments_page.html', comments=comments)
+
+    # elif request.method == 'POST':
+    comments.append(request.form["contents"])
+    return redirect(url_for('index'))
 
 
 @app.route("/adder", methods=["GET", "POST"])
@@ -25,25 +31,8 @@ def adder_page():
             errors += "<p>{!r} is not a number.</p>\n".format(request.form["number2"])
         if number1 is not None and number2 is not None:
             result = do_calculation(number1, number2)
-            return '''
-                        <html>
-                            <body>
-                                <p>The result is {result}</p>
-                                <p><a href="/">Click here to calculate again</a>
-                            </body>
-                        </html>
-                    '''.format(result=result)
+            return render_template('results_page.html', result = result)
+    return render_template('adder_page.html', errors=errors)
 
-    return '''
-            <html>
-                <body>
-                    {errors}
-                    <p>Enter your numbers:
-                    <form method="post" action=".">
-                        <p><input name="number1" /></p>
-                        <p><input name="number2" /></p>
-                        <p><input type="submit" value="Do calculation" /></p>
-                    </form>
-                </body>
-            </html>
-        '''.format(errors=errors)
+if __name__ == '__main__':
+    app.run(debug=True)

@@ -1,0 +1,14 @@
+{% extends 'main_page.html' %}
+
+{% block content %}
+
+    {{ errors }}
+    <p>Enter your numbers:
+    <form method="post" action="/adder">
+        <p><input name="number1" /></p>
+        <p><input name="number2" /></p>
+        <p><input type="submit" value="Do calculation" class="btn btn-success"/></p>
+    </form>
+
+
+{% endblock %}

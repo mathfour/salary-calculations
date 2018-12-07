@@ -1,0 +1,19 @@
+{% extends 'main_page.html' %}
+
+{% block content %}
+    {% for comment in comments %}
+        <div class="row">
+            {{ comment }}
+        </div>
+    {% endfor %}
+
+    <a href="{{ url_for('adder_page') }}" class="btn btn-success">Go To Adder Page</a>
+
+    <div>
+        <form action="." method="POST">
+            <textarea name="contents" placeholder="Enter a comment" class="form-control"></textarea>
+            <input type="submit" class="btn btn-success" value="Post comment">
+        </form>
+    </div>
+
+{% endblock %}
