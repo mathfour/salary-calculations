@@ -1,24 +1,24 @@
 from flask import Flask, redirect, request, render_template, url_for
 from processing import do_calculation
 from flask_sqlalchemy import SQLAlchemy
-from app_dev import dev_database
+# from app_dev import dev_database
 
 app = Flask(__name__)
 
-where_am_i = 'online'
+# where_am_i = 'home'
 
-if where_am_i == 'online':
-    SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
-        username="MathFour",
-        password="bB88!**W6W9ccb",
-        hostname="MathFour.mysql.pythonanywhere-services.com",
-        databasename="MathFour$comments",
-    )
-    app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
-    app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-elif where_am_i == 'home':
-    dev_database()
+# if where_am_i == 'online':
+SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
+    username="MathFour",
+    password="bB88!**W6W9ccb",
+    hostname="MathFour.mysql.pythonanywhere-services.com",
+    databasename="MathFour$comments",
+)
+app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
+app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+# elif where_am_i == 'home':
+#     dev_database()
 
 db = SQLAlchemy(app)
 
