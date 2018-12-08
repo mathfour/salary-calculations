@@ -1,20 +1,24 @@
 from flask import Flask, redirect, request, render_template, url_for
 from processing import do_calculation
-from flask_sqlalchemy import SQLAlchemy #turn on in production ONLINE
+from flask_sqlalchemy import SQLAlchemy
+from app_dev import dev_database
 
 app = Flask(__name__)
 
+where_am_i = 'online'
 
-#turn on in production ONLINE VVVVVVVVVVVVVVVVVVVV
-SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
-    username="MathFour",
-    password="bB88!**W6W9ccb",
-    hostname="MathFour.mysql.pythonanywhere-services.com",
-    databasename="MathFour$comments",
-)
-app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
-app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+if where_am_i == 'online':
+    SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
+        username="MathFour",
+        password="bB88!**W6W9ccb",
+        hostname="MathFour.mysql.pythonanywhere-services.com",
+        databasename="MathFour$comments",
+    )
+    app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
+    app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+elif where_am_i == 'home':
+    dev_database()
 
 db = SQLAlchemy(app)
 
@@ -22,23 +26,14 @@ class Comment(db.Model):
     __tablename__ = "comments"
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(4096))
-# turn on in production ONLINE ^^^^^^^^^^^^^^^^^^^^^^
-
-
-# comments.append(request.form["contents"]) #turn on in dev on LAPTOP
-# comments = [] #turn on in dev on LAPTOP
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "GET":
-        return render_template('comments_page.html', comments=Comment.query.all()) #turn on in production ONLINE
-        # return render_template('comments_page.html', comments=comments)) #turn on in dev on LAPTOP
-
-    comment = Comment(content=request.form["contents"])  # turn on in production ONLINE
-    db.session.add(comment)  # turn on in production ONLINE
-    db.session.commit()  # turn on in production ONLINE
-    # comments.append(request.form["contents"]) #turn on in dev on LAPTOP
-
+        return render_template('comments_page.html', comments=Comment.query.all())
+    comment = Comment(content=request.form["contents"])
+    db.session.add(comment)
+    db.session.commit()
     return redirect(url_for('index'))
 
 
